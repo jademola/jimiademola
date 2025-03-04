@@ -32,7 +32,6 @@ const About = () => {
                     ))}
                 </ul>
 
-                <h4>Tech Stack</h4>
             </div>
         </div>
     </div>
