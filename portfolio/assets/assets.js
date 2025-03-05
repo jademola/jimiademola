@@ -1,10 +1,10 @@
 import user_image from './user-img.jpg';
 import camera_icon from './camera-icon.png';
 import camera_icon_dark from './camera-icon-dark.png';
-import edu_icon from './edu-icon.png';
-import edu_icon_dark from './edu-icon-dark.png';
-import project_icon from './project-icon.png';
-import project_icon_dark from './project-icon-dark.png';
+import data_icon from './data_icon.png';
+import data_icon_dark from './data_icon_dark.png';
+import code_icon from './code-icon.png';
+import code_icon_dark from './code-icon-dark.png';
 import vscode from './vscode.png';
 import firebase from './firebase.png';
 import figma from './figma.png';
@@ -40,10 +40,10 @@ export const assets = {
     user_image,
     camera_icon,
     camera_icon_dark,
-    edu_icon,
-    edu_icon_dark,
-    project_icon,
-    project_icon_dark,
+    data_icon,
+    data_icon_dark,
+    code_icon,
+    code_icon_dark,
     vscode,
     firebase,
     figma,
@@ -107,9 +107,9 @@ export const serviceData = [
 ]
 
 export const infoList = [
-    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Languages', description: 'HTML, CSS, JavaScript React.Js, Next.Js' },
-    { icon: assets.edu_icon, iconDark: assets.edu_icon_dark, title: 'Education', description: 'B.Sc in Computer Science\n+ see certificates below' },
-    { icon: assets.project_icon, iconDark: assets.project_icon_dark, title: 'Projects', description: 'Built over 5 applications' }
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Languages', description: 'HTML, CSS, JavaScript React.Js, Next.Js' },
+    { icon: assets.data_icon, iconDark: assets.data_icon_dark, title: 'Data Analyst', description: 'Researcher with\n B.Sc in Computer Science' },
+    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photography', description: 'Freelance work and passion projects' }
 ];
 
 export const toolsData = [
