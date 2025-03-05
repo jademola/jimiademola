@@ -15,7 +15,7 @@ const About = () => {
             </div>
             <div className='flex-1'>
                 <p className='mb-10 max-w-2xl font-Ovo'>
-                    I am currently a student at the University of British Columbia looking to gain expereince and apply my skills
+                    I am currently a student at the University of British Columbia looking to gain experience and apply my skills
                     to improve your team or product. Additionally, I do freelance photography work. Excited to grow my career and see 
                     where the road takes me.
                 </p>

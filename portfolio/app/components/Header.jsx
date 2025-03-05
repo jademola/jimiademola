@@ -14,7 +14,7 @@ return (
             <h1 className='text-3xl sm:text-6xl lg:text-[66px] font-Ovo'>
                     a software developer based in Canada.</h1>
             <p className='max-w-2xl mx-auto font-Ovo'>
-            I am a software developer and freelance photographer with interest in Cybersecurity and medical technology.
+            Welcome to my portfolio! As a developer and data analyst, I have interests in technology-enhanced healthcare solutions and cybersecurity. As a photographer and designer, I enjoy working in sports.
             </p>
             <div className='flex flex-col sm:flex-row items-center gap-4 mt-4'>
                     <a href="#contact" className='px-10 py-3 border border-white rounded-full bg-black text-white flex items-center gap-2'>

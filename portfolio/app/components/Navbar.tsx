@@ -1,5 +1,6 @@
 import { assets } from '@/assets/assets'
 import Image from 'next/image'
+import Link from 'next/link';
 import React, {useRef} from 'react'
 
 const Navbar = () => {
@@ -21,9 +22,9 @@ const Navbar = () => {
             <Image src={assets.header_bg_color} alt='' className='w-full'/>
         </div>
         <nav className='w-full fixed px-5 lg:px-8 xl:py-4 flex items-center justify-between z-50'>
-            <a href="#top">
+            <Link href="#top">
                 <Image src={assets.logo} className='w-28 cursor-pointer mr-14 ' alt=''/>
-            </a>
+            </Link>
 
             <ul className='hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 bg-white shadow-sm bg-opacity-50'>
                 <li><a className='font-Ovo' href="#top">Home</a></li>

@@ -1,11 +1,11 @@
 // import { motion } from "framer-motion";
-import { FaReact, FaAws, FaPython, FaNodeJs } from "react-icons/fa";
+import { FaReact, FaUnity, FaPython, FaNodeJs } from "react-icons/fa";
 import {
   SiNextdotjs,
   SiTailwindcss,
   SiTypescript,
-  SiPostgresql,
-  SiDocker,
+  SiAdobephotoshop,
+  SiR,
   SiLinux,
   SiGit,
   SiFlask,
@@ -38,10 +38,10 @@ export const Skills = () => {
     { Icon: SiNextdotjs, name: "Next.js" },
     { Icon: FaDocker, name: "Docker" },
     { Icon: BiLogoTypescript, name: "TypeScript" },
-    { Icon: SiPostgresql, name: "PostgreSQL" },
-    { Icon: FaAws, name: "AWS" },
+    { Icon: SiAdobephotoshop, name: "Adobe Photoshop" },
+    { Icon: SiR, name: "R" },
     { Icon: FaPython, name: "Python" },
-    { Icon: FaNodeJs, name: "Node.js" },
+    { Icon: FaUnity, name: "Unity 6" },
     { Icon: SiTailwindcss, name: "Tailwind CSS" },
     { Icon: FaJava, name: "Java" },
     { Icon: FaLinux, name: "Linux", invert: true },
@@ -49,16 +49,11 @@ export const Skills = () => {
   ];
 
   return (
-    <section className="py-12 md:py-24 lg:py-32 " id="skills">
+    <div className="py-12 md:py-24 lg:py-32 " id="stack">
       <div className="container mx-auto px-10">
-        <div className="flex   flex-col items-center justify-center gap-4 space-y-6">
-          <Link href="#skills">
-            <div  className="space-x-2">
-              <div>🎨</div> <p>Skills</p>
-            </div>
-          </Link>
-          <h2 className="text-xl line-clamp-1 md:text-2xl font-semibold text-primary leading-loose">
-            Technologies I Use
+        <div className="flex flex-col items-center justify-center gap-4 space-y-6">
+          <h2 className="text-xl line-clamp-1 md:text-2xl font-semibold font-Ovo leading-loose">
+            Tech Stack
           </h2>
 
           <div className="grid w-2/3  grid-cols-2 gap-12 sm:grid-cols-3 lg:grid-cols-4">
@@ -66,12 +61,12 @@ export const Skills = () => {
               <SkillIcon key={index} {...skill} />
             ))}
           </div>
-          <p className="text-sm md:text-base font-medium  text-center text-muted-foreground pt-8">
-            ...and more! Plus I&apos;m always learning new things ✨
+          <p className="text-sm md:text-base font-medium  text-center font-Ovo pt-8">
+            ...and more! Plus I&apos;m always adding to my skills.
           </p>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
