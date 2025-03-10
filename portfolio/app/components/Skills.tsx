@@ -1,21 +1,15 @@
 // import { motion } from "framer-motion";
-import { FaReact, FaUnity, FaPython, FaNodeJs } from "react-icons/fa";
+import { FaReact, FaUnity, FaPython } from "react-icons/fa";
 import {
   SiNextdotjs,
   SiTailwindcss,
-  SiTypescript,
   SiAdobephotoshop,
   SiR,
-  SiLinux,
   SiGit,
-  SiFlask,
-  SiKubernetes,
-  SiPhp,
 } from "react-icons/si";
 import { BiLogoTypescript } from "react-icons/bi";
-import { FaDocker, FaFlask, FaJava, FaLinux } from "react-icons/fa6";
+import { FaDocker, FaJava, FaLinux } from "react-icons/fa6";
 import { IconType } from "react-icons/lib";
-import Link from "next/link";
 
 const SkillIcon = ({
   Icon,
