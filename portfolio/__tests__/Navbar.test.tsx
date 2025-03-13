@@ -41,7 +41,7 @@ describe('Navbar Component', () => {
     });
 
     test('renders theme toggle button', () => {
-        const themeButton = screen.getByRole('button');
+        const themeButton = screen.getByRole('button', { name: ''});
         expect(themeButton).toBeInTheDocument();
         expect(themeButton.querySelector('img')).toHaveAttribute('src', '/mock-moon.png');
     });

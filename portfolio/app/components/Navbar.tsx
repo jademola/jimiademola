@@ -27,10 +27,11 @@ const Navbar = () => {
             </Link>
 
             <ul className='hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 bg-white shadow-sm bg-opacity-50'>
-                <li><a className='font-Ovo' href="#top">Home</a></li>
+                <li><a className='font-Ovo' href="#top">#</a></li>
                 <li><a className='font-Ovo' href="#about">About Me</a></li>
+                <li><a className='font-Ovo' href="#education">Education</a></li>
                 <li><a className='font-Ovo' href="#experiences">Experiences</a></li>
-                <li><a className='font-Ovo' href="#work">My Work</a></li>
+                <li><a className='font-Ovo' href="#portfolio">Portfolio</a></li>
                 <li><a className='font-Ovo' href="#stack">Tech Stack</a></li>
             </ul>
 
