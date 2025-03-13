@@ -43,10 +43,10 @@ export const Skills = () => {
   ];
 
   return (
-    <div className="py-12 md:py-24 lg:py-32 " id="stack">
+    <div className="w-full px-[12%] py-10 scroll-mt-20" id="stack">
       <div className="container mx-auto px-10">
         <div className="flex flex-col items-center justify-center gap-4 space-y-6">
-          <h2 className="text-xl line-clamp-1 md:text-2xl font-semibold font-Ovo leading-loose">
+          <h2 className="text-center text-5xl font-Ovo">
             Tech Stack
           </h2>
 
