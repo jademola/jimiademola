@@ -10,6 +10,7 @@ const Writer = ({ positions, className }: { positions: Array<string>, className?
         {
           delay: 50,
           loop: true,
+          wrapperClassName: "font-Ovo font-semibold Typewriter__wrapper"
         }
       }
         onInit={(typewriter) => {

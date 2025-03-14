@@ -83,8 +83,8 @@ export const assets = {
 export const loopPositions = [
     'software developer',
     'data analyst',
-    'student',
-    'photographer'
+    'photographer',
+    'student'
 ];
 
 export const workData = [
@@ -105,7 +105,7 @@ export const workData = [
     },
     {
         title: 'No Mo Momo',
-        description: 'Unity 2D Frogger Adapatation',
+        description: 'Unity 2D Frogger adaptation',
         bgImage: '/work-4.png',
     },
 ]
@@ -113,14 +113,14 @@ export const workData = [
 export const serviceData = [
     { icon: assets.web_icon, title: 'Web & Mobile Development', description: 'Use React.js, HTML and Android Studio to provide exceptional services for your application', link: '' },
     { icon: assets.mobile_icon, title: 'Backend Development', description: 'Experience building Webservers using Python, anc ensure secure databases using Firebase or SQL', link: '' },
-    { icon: assets.ui_icon, title: 'Photography & Graphic Design', description: 'Freelance photography in the Kelowna and Edmonton region. Can additonally provide logos, posters and socail media posts using Photoshop and Canva.', link: '' },
+    { icon: assets.ui_icon, title: 'Photography & Graphic Design', description: 'Freelance photography in the Kelowna and Edmonton region. Can additionally provide logos, posters and social media posts using Photoshop and Canva.', link: '' },
     { icon: assets.graphics_icon, title: 'Game Development', description: 'Creating fully-deployed games including custom sprites and animations using Unity 6', link: '' },
 ]
 
 export const infoList = [
     { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Developer', description: 'HTML, CSS, JavaScript React.Js, Next.Js' },
     { icon: assets.data_icon, iconDark: assets.data_icon_dark, title: 'Data Analyst', description: 'Researcher with\n B.Sc in Computer Science' },
-    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photography', description: 'Freelance work and passion projects' }
+    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photographer', description: 'Freelance work and passion projects' }
 ];
 
 export const toolsData = [

@@ -17,7 +17,7 @@ const Header = () => {
                                 Hi! I&apos;m Jimi <Image src={assets.hand_icon} alt='' className='w-6' />
                         </h3>
                         <h1 className='text-3xl sm:text-6xl lg:text-[66px] font-Ovo'>
-                                a <Writer positions={loopPositions} />
+                                a <Writer positions={loopPositions} className=''/>
                                 based in Canada.</h1>
                         <p className='max-w-2xl mx-auto font-Ovo'>
                                 Welcome to my portfolio! As a developer and data analyst, I have interests in technology-enhanced healthcare solutions and cybersecurity. Additionally, as a photographer and designer, I enjoy working in sports.
