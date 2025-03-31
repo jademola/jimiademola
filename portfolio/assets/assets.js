@@ -118,7 +118,7 @@ export const serviceData = [
 ]
 
 export const infoList = [
-    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Developer', description: 'HTML, CSS, JavaScript React.Js, Next.Js' },
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Developer', description: 'Experience with web development tools such as React / Next.Js ' },
     { icon: assets.data_icon, iconDark: assets.data_icon_dark, title: 'Data Analyst', description: 'Researcher with\n B.Sc in Computer Science' },
     { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photographer', description: 'Freelance work and passion projects' }
 ];
