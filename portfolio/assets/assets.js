@@ -36,6 +36,8 @@ import send_icon from './send-icon.png';
 import right_arrow_bold from './right-arrow-bold.png';
 import right_arrow_bold_dark from './right-arrow-bold-dark.png';
 import ubc_logo from './ubc-logo.png';
+import fortinet_logo from './fortinet_logo.png';
+import canada_flag from './canada_flag.png';
 import nserc_logo from './nserc.png';
 
 export const assets = {
@@ -77,6 +79,8 @@ export const assets = {
     right_arrow_bold,
     right_arrow_bold_dark,
     ubc_logo,
+    fortinet_logo,
+    canada_flag,
     nserc_logo
 };
 
