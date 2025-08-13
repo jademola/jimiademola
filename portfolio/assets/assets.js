@@ -122,9 +122,14 @@ export const serviceData = [
 ]
 
 export const infoList = [
-    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Developer', description: 'Experience with web development tools such as React / Next.js ' },
-    { icon: assets.data_icon, iconDark: assets.data_icon_dark, title: 'Data Analyst', description: 'Researcher pursuing a B.Sc. with Honours in Computer Science' },
-    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photographer', description: 'Freelance work and passion projects \n\nInstagram: @capturedbyjimi' }
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Web Developer', description: 'Experience with web development tools such as React / Next.js ' },
+    // replace icon with something research related!!
+    { icon: assets.data_icon, iconDark: assets.data_icon_dark, title: 'Researcher', description: 'NSERC-USRA Grant Recipient to complete research in cryptography' },
+    { icon: assets.camera_icon, iconDark: assets.camera_icon_dark, title: 'Photographer', description: 'Freelance work and passion projects' },
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Security Enthusiast', description: 'Enhancing my skills through CTFs and various industry-standard certificates ' },
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Data Analyst', description: 'Used data to map wildfires, athletes and other interesting patterns. ' },
+    // student related icon needed
+    { icon: assets.code_icon, iconDark: assets.code_icon_dark, title: 'Student', description: 'Interested in pursuing a Masters in Computer Science with a cybersecurity focus' }
 ];
 
 export const toolsData = [
