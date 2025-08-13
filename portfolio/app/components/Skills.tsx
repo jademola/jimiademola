@@ -47,7 +47,7 @@ export const Skills = () => {
       <div className="container mx-auto px-10">
         <div className="flex flex-col items-center justify-center gap-4 space-y-6">
           <h2 className="text-center text-5xl font-Ovo">
-            Tech Stack
+            My Toolbox
           </h2>
 
           <div className="grid w-2/3  grid-cols-2 gap-12 sm:grid-cols-3 lg:grid-cols-4">
