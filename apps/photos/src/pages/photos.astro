@@ -1,0 +1,127 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import filmstripWhite from '../assets/icons/filmstrip-white.png';
+import filmstripBlack from '../assets/icons/filmstrip-black.png';
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/portfolio/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+
+const photos = Object.values(portfolioImages)
+	.map((mod) => mod.default)
+	.sort(() => Math.random() - 0.5);
+---
+
+<Layout title="Jimi Ademola — Photography">
+	<main>
+		<header class="site-header">
+			<a id="videos-link" href="/videos">
+				Videos:<img src={filmstripWhite.src} alt="See Videos" width="50" height="50" />
+			</a>
+			<h1>Jimi Ademola</h1>
+			<p>Photography</p>
+			
+		</header>
+
+		<!-- TODO: Add filter / sort of some sort to differ between galleries -->
+
+		<div class="masonry-gallery" id="portfolio-gallery">
+			{
+				photos.map((photo) => (
+					<a
+						href={photo.src}
+						data-pswp-width={photo.width}
+						data-pswp-height={photo.height}
+						class="masonry-item"
+						target="_blank"
+					>
+						<Image src={photo} alt="Portfolio photograph" width={800} loading="lazy" />
+					</a>
+				))
+			}
+		</div>
+	</main>
+
+	<script>
+		import PhotoSwipeLightbox from 'photoswipe/lightbox';
+		import 'photoswipe/style.css';
+
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '#portfolio-gallery',
+			children: 'a',
+			pswpModule: () => import('photoswipe'),
+		});
+
+		lightbox.init();
+	</script>
+</Layout>
+
+<style>
+	.site-header {
+		padding: 3rem 2rem 1rem;
+		text-align: center;
+	}
+
+	.site-header h1 {
+		margin: 0;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		color: rgb(255, 255, 255);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.site-header p {
+		margin: 0.35rem 0 0;
+		color: rgb(255, 255, 255);
+		text-transform: uppercase;
+		letter-spacing: 0.2em;
+		font-size: 0.8rem;
+	}
+
+	.masonry-gallery {
+		column-count: 3;
+		column-gap: 1.5rem;
+		padding: 1rem 2rem 3rem;
+	}
+
+	@media (max-width: 1024px) {
+		.masonry-gallery {
+			column-count: 2;
+		}
+	}
+
+	@media (max-width: 640px) {
+		.masonry-gallery {
+			column-count: 1;
+			padding: 1rem 1rem 2rem;
+		}
+	}
+
+	.masonry-item {
+		display: block;
+		break-inside: avoid;
+		margin-bottom: 1.5rem;
+	}
+
+	.masonry-item :global(img) {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 4px;
+		transition: filter 0.3s ease;
+	}
+
+	.masonry-item:hover :global(img) {
+		filter: brightness(0.85);
+	}
+
+	#videos-link {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		text-decoration: none;
+		color: rgb(255, 255, 255);
+	}
+</style>
