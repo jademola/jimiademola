@@ -13,11 +13,11 @@
     "generate-types": "wrangler types"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.6.0",
+    "@astrojs/cloudflare": "^14.2.1",
     "@astrojs/react": "^5.0.6",
     "@types/react": "^19.2.16",
     "@types/react-dom": "^19.2.3",
-    "astro": "^6.4.8",
+    "astro": "^7.2.2",
     "photoswipe": "^5.4.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
