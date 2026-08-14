@@ -10,4 +10,9 @@ export default defineConfig({
   site: "https://www.photos.jimiademola.com",
   integrations: [react()],
   adapter: cloudflare(),
+  vite: {
+    resolve: {
+      tsconfigPaths: false,
+    },
+  },
 });
