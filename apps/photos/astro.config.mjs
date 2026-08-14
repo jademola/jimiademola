@@ -6,6 +6,7 @@ import cloudflare from '@astrojs/cloudflare';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'server',
   site: "https://www.photos.jimiademola.com",
   integrations: [react()],
   adapter: cloudflare(),
