@@ -11,7 +11,7 @@ export default defineConfig({
   output: 'server',
   site: "https://www.photos.jimiademola.com",
   integrations: [react(), sitemap()],
-  adapter: cloudflare(),
+  adapter: cloudflare({ imageService: 'compile' }),
   vite: {
     resolve: {
       tsconfigPaths: false,

@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import filmstripWhite from '../assets/icons/filmstrip-white.png';
 import filmstripBlack from '../assets/icons/filmstrip-black.png';
@@ -9,9 +9,21 @@ const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 	{ eager: true },
 );
 
-const photos = Object.values(portfolioImages)
-	.map((mod) => mod.default)
-	.sort(() => Math.random() - 0.5);
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const photos = await Promise.all(
+  shuffle(Object.values(portfolioImages).map((m) => m.default)).map(async (img) => ({
+    img,
+    full: await getImage({ src: img, width: 2000, format: 'webp', quality: 80 }),
+  })),
+);
 ---
 
 <Layout title="Gallery" language="en">
@@ -29,19 +41,26 @@ const photos = Object.values(portfolioImages)
 		<!-- TODO: Add filter / sort of some sort to differ between galleries -->
 
 		<div class="masonry-gallery" id="portfolio-gallery">
-			{
-				photos.map((photo) => (
-					<a
-						href={photo.src}
-						data-pswp-width={photo.width}
-						data-pswp-height={photo.height}
-						class="masonry-item"
-						target="_blank"
-					>
-						<Image src={photo} alt="Portfolio photograph" width={800} loading="lazy" />
-					</a>
-				))
-			}
+			{photos.map(({ img, full }, i) => (
+			<a
+      		href={full.src}
+     		data-pswp-width={full.attributes.width}
+      		data-pswp-height={full.attributes.height}
+			class="masonry-item"
+			target="_blank"
+			rel="noopener"
+			>
+			<Image
+				src={img}
+				alt="Almost there..."
+				widths={[400, 800, 1200]}
+				sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+				loading={i < 3 ? 'eager' : 'lazy'}
+				fetchpriority={i < 3 ? 'high' : 'auto'}
+				decoding="async"
+			/>
+			</a>
+		))}
 		</div>
 		</body>
 	</main>
@@ -76,7 +95,8 @@ const photos = Object.values(portfolioImages)
 		font-size: clamp(1.75rem, 4vw, 2.5rem);
 		color: rgb(0, 0, 0);
 		font-weight: 600;
-		letter-spacing: -0.02em;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
 	}
 
 	.site-header p {
