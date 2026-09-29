@@ -1,0 +1,73 @@
+---
+import jimiLogo from '../assets/images/jimi-logo.svg';
+---
+
+<div id="container">
+    <body>
+        <main>
+            <div id="hero">
+                <img id="logo" src={jimiLogo.src} alt="Jimi Logo" />
+                <h2>$ whoami</h2>
+                <h2 id="click-to-see"> &gt; click to see</h2> 
+                <h3 class="info">code i wrote</h3>
+                <h3 class="info">research i conducted</h3>
+                <h3 class="info">photos i took</h3>
+                <h3 class="info">& the fun stuff</h3>
+                <div id="links">
+                </div>
+            </div>
+        </main>
+    </body>
+</div>
+
+<style>
+    h1 {
+        font-size: 10rem;
+        margin-bottom: 0.5rem;
+        padding-left: auto;
+        padding-right: auto;
+        text-align: center;
+        font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    }
+
+    h2 {
+        font-size: 3rem;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        text-align: left;
+        font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
+    }
+
+    .info {
+        display: none;
+    }
+
+    #click-to-see {
+        cursor: pointer; 
+        }
+
+    #click-to-see:hover {
+        color: rgb(78, 80, 86);
+    }
+</style>
+
+<script>
+    const clickToSee = document.querySelector('#click-to-see');
+    const info = document.querySelectorAll<HTMLElement>('.info');
+
+    clickToSee?.addEventListener('click', () => {
+        clickToSee.textContent =
+            '> Simplicity is king. See my areas of interest below and enjoy the exploration!';
+        info.forEach((element) => {
+            element.style.setProperty('display', 'block');
+        });
+    });
+</script>

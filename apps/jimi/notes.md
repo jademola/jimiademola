@@ -1,0 +1,2 @@
+Final-year student at the University of British Columbia working toward a B.Sc. Honours in Computer Science. In the continually evolving tech landscape, I see immense value in the field of computer-backed health solutions. Whether through the field of cybersecurity or research advancements, I hope to use my skills to contribute to the industry. Currently looking to expand my knowledge in the industry and research settings.
+
