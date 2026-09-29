@@ -5,7 +5,7 @@ import filmstripWhite from '../assets/icons/filmstrip-white.png';
 import filmstripBlack from '../assets/icons/filmstrip-black.png';
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
-	'../assets/portfolio/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	'../assets/portfolio/**/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
 	{ eager: true },
 );
 
@@ -19,11 +19,30 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const photos = await Promise.all(
-  shuffle(Object.values(portfolioImages).map((m) => m.default)).map(async (img) => ({
-    img,
-    full: await getImage({ src: img, width: 2000, format: 'webp', quality: 80 }),
-  })),
+	shuffle(
+		Object.entries(portfolioImages).map(([path, module]) => ({
+			img: module.default,
+			category: path
+				.replace('../assets/portfolio/', '')
+				.split('/')
+				.slice(0, -1)
+				.join('/') || 'uncategorized',
+		})),
+	).map(async ({ img, category }) => ({
+		img,
+		category,
+		full: await getImage({ src: img, width: 2000, format: 'webp', quality: 80 }),
+	})),
 );
+
+const categories = [...new Set(photos.map(({ category }) => category))].sort();
+
+function categoryLabel(category: string): string {
+	return category
+		.split('/')
+		.map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+		.join(' / ');
+}
 ---
 
 <Layout title="Gallery" language="en">
@@ -38,14 +57,24 @@ const photos = await Promise.all(
 			
 		</header>
 
-		<!-- TODO: Add filter / sort of some sort to differ between galleries -->
+		<nav class="gallery-filters" aria-label="Filter photos by type">
+			<button type="button" class="filter-button is-active" data-filter="all" aria-pressed="true">
+				All
+			</button>
+			{categories.map((category) => (
+				<button type="button" class="filter-button" data-filter={category} aria-pressed="false">
+					{categoryLabel(category)}
+				</button>
+			))}
+		</nav>
 
 		<div class="masonry-gallery" id="portfolio-gallery">
-			{photos.map(({ img, full }, i) => (
+			{photos.map(({ img, full, category }, i) => (
 			<a
       		href={full.src}
      		data-pswp-width={full.attributes.width}
       		data-pswp-height={full.attributes.height}
+			data-category={category}
 			class="masonry-item"
 			target="_blank"
 			rel="noopener"
@@ -76,6 +105,24 @@ const photos = await Promise.all(
 		});
 
 		lightbox.init();
+
+		const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-button');
+		const galleryItems = document.querySelectorAll<HTMLElement>('.masonry-item');
+
+		filterButtons.forEach((button) => {
+			button.addEventListener('click', () => {
+				const filter = button.dataset.filter;
+
+				filterButtons.forEach((filterButton) => {
+					filterButton.classList.toggle('is-active', filterButton === button);
+					filterButton.setAttribute('aria-pressed', String(filterButton === button));
+				});
+
+				galleryItems.forEach((item) => {
+					item.hidden = filter !== 'all' && item.dataset.category !== filter;
+				});
+			});
+		});
 	</script>
 </Layout>
 
@@ -107,6 +154,38 @@ const photos = await Promise.all(
 		font-size: 0.8rem;
 	}
 
+	.gallery-filters {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
+		padding: 1rem 2rem 0.5rem;
+	}
+
+	.filter-button {
+		padding: 0.5rem 0.85rem;
+		border: 1px solid rgb(0, 0, 0);
+		border-radius: 999px;
+		background: transparent;
+		color: rgb(0, 0, 0);
+		font: inherit;
+		font-size: 0.75rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		cursor: pointer;
+	}
+
+	.filter-button:hover,
+	.filter-button.is-active {
+		background: rgb(0, 0, 0);
+		color: rgb(249, 248, 240);
+	}
+
+	.filter-button:focus-visible {
+		outline: 2px solid rgb(0, 0, 0);
+		outline-offset: 3px;
+	}
+
 	.masonry-gallery {
 		column-count: 3;
 		column-gap: 1.5rem;
@@ -130,6 +209,10 @@ const photos = await Promise.all(
 		display: block;
 		break-inside: avoid;
 		margin-bottom: 1.5rem;
+	}
+
+	.masonry-item[hidden] {
+		display: none;
 	}
 
 	.masonry-item :global(img) {
