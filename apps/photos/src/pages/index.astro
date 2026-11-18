@@ -1,64 +1,152 @@
 ---
-import backgroundImage from "../assets/background.png";
-import Logo from "../assets/favicon.svg";
-import Cursor from "../assets/cursor.png";
-import Layout from "../layouts/Layout.astro";
+import { Image, getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import filmstripWhite from '../assets/icons/filmstrip-white.png';
+import filmstripBlack from '../assets/icons/filmstrip-black.png';
+
+const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
+	'../assets/portfolio/*/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
+	{ eager: true },
+);
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const photos = await Promise.all(
+  shuffle(Object.values(portfolioImages).map((m) => m.default)).map(async (img) => ({
+    img,
+    full: await getImage({ src: img, width: 2000, format: 'webp', quality: 80 }),
+  })),
+);
 ---
 
-<Layout title="Home" language="en">
-	<body>
-		<div>
-            <div
-			id="background"
-			style={`background-image: url(${backgroundImage.src}); background-size: cover;`}
-		>
-		</div>
+<Layout title="Gallery" language="en">
+	<main>
+		<body id="body">
+			<header class="site-header">
+				<h1>Jimi Ademola</h1>
+				<p>Selects</p>
+			
+		</header>
 
-		<!-- use as anchor -->
-		<div id="home">
-				<a id="logo" href="/photos"><img  src={Logo.src} alt="Logo" /></a>
+		<!-- TODO: Add filter / sort of some sort to differ between galleries -->
+
+		<div class="masonry-gallery" id="portfolio-gallery">
+			{photos.map(({ img, full }, i) => (
+			<a
+      		href={full.src}
+     		data-pswp-width={full.attributes.width}
+      		data-pswp-height={full.attributes.height}
+			class="masonry-item"
+			target="_blank"
+			rel="noopener"
+			>
+			<Image
+				src={img}
+				alt="Almost there..."
+				widths={[400, 800, 1200]}
+				sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+				loading={i < 3 ? 'eager' : 'lazy'}
+				fetchpriority={i < 3 ? 'high' : 'auto'}
+				decoding="async"
+			/>
+			</a>
+		))}
 		</div>
-        </div>
-        
-		<slot />
-	</body>
+		</body>
+	</main>
+
+	<script>
+		import PhotoSwipeLightbox from 'photoswipe/lightbox';
+		import 'photoswipe/style.css';
+
+		const lightbox = new PhotoSwipeLightbox({
+			gallery: '#portfolio-gallery',
+			children: 'a',
+			pswpModule: () => import('photoswipe'),
+		});
+
+		lightbox.init();
+	</script>
 </Layout>
 
 <style>
-	#background {
-		position: fixed;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-		filter: blur(7px);
+	#body {
+		background-color: rgb(249, 248, 240);
+
 	}
 
-	#home {
-		position: fixed;
-		inset: 0;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		height: 100vh;
-		z-index: 1;
+	.site-header {
+		padding: 3rem 2rem 1rem;
+		text-align: center;
 	}
 
-	#logo {
-		display: block;
-		margin: auto;
-		width: 20vw;
-        /* cursor: url(../assets/cursor.png), auto; */
+	.site-header h1 {
+		margin: 0;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		color: rgb(0, 0, 0);
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		text-transform: uppercase;
 	}
-	/* #logo:hover {
-		transform: scale(1.1);
-		transition: transform 0.3s ease-in-out;
+
+	.site-header p {
+		margin: 0.35rem 0 0;
+		color: rgb(0, 0, 0);
+		text-transform: uppercase;
+		letter-spacing: 0.2em;
+		font-size: 0.8rem;
 	}
-	bugged with weird grey border issue */
+
+	.masonry-gallery {
+		column-count: 3;
+		column-gap: 1.5rem;
+		padding: 1rem 2rem 3rem;
+	}
+
+	@media (max-width: 1024px) {
+		.masonry-gallery {
+			column-count: 2;
+		}
+	}
 
 	@media (max-width: 640px) {
-		#logo {
-			width: 40vw;
+		.masonry-gallery {
+			column-count: 1;
+			padding: 1rem 1rem 2rem;
 		}
+	}
+
+	.masonry-item {
+		display: block;
+		break-inside: avoid;
+		margin-bottom: 1.5rem;
+	}
+
+	.masonry-item :global(img) {
+		width: 100%;
+		height: auto;
+		display: block;
+		border-radius: 0px;
+		border: 1px solid rgb(221, 221, 221);
+		transition: filter 0.3s ease;
+	}
+
+	.masonry-item:hover :global(img) {
+		filter: brightness(0.85);
+	}
+
+	#videos-link {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		text-decoration: none;
+		color: rgb(0, 0, 0);
 	}
 </style>
