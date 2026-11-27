@@ -1,2 +1,78 @@
-<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1229981408?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="boxer"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
-<div style="padding:56.25% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1229981245?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="walkout"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+---
+import Layout from '../layouts/Layout.astro';
+
+// Not linked from the site yet, so it's kept out of search and the sitemap.
+const videos = [
+	{ id: '1229981408', title: 'Boxer' },
+	{ id: '1229981245', title: 'Walkout' },
+];
+---
+
+<Layout title="Video" noindex>
+	<main>
+		<header class="site-header">
+			<h1>Jimi Ademola</h1>
+			<p>Video</p>
+		</header>
+
+		<div class="videos">
+			{
+				videos.map(({ id, title }) => (
+					<div class="frame">
+						<iframe
+							src={`https://player.vimeo.com/video/${id}?badge=0&autopause=0&dnt=1`}
+							title={title}
+							loading="lazy"
+							allow="autoplay; fullscreen; picture-in-picture; encrypted-media; web-share"
+							referrerpolicy="strict-origin-when-cross-origin"
+						/>
+					</div>
+				))
+			}
+		</div>
+	</main>
+</Layout>
+
+<style>
+	.site-header {
+		padding: 3.5rem 2rem 1.5rem;
+		text-align: center;
+	}
+
+	.site-header h1 {
+		margin: 0;
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
+		color: rgb(0, 0, 0);
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.site-header p {
+		margin: 0.5rem 0 0;
+		color: rgb(0, 0, 0);
+		text-transform: uppercase;
+		letter-spacing: 0.2em;
+		font-size: 0.8rem;
+	}
+
+	.videos {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 1rem 2rem 3rem;
+	}
+
+	.frame {
+		position: relative;
+		aspect-ratio: 16 / 9;
+		margin-bottom: 1.5rem;
+	}
+
+	iframe {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+</style>

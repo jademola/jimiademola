@@ -1,74 +1,134 @@
 ---
 import { Image, getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
-import filmstripWhite from '../assets/icons/filmstrip-white.png';
-import filmstripBlack from '../assets/icons/filmstrip-black.png';
+
+// Prerendered at build time, which is what lets the Cloudflare `compile`
+// image service resize everything below. The random order now happens in the
+// browser (see the inline script after the gallery).
+export const prerender = true;
 
 const portfolioImages = import.meta.glob<{ default: ImageMetadata }>(
 	'../assets/portfolio/*/*.{jpg,jpeg,png,JPG,JPEG,PNG}',
 	{ eager: true },
 );
 
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
+const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const photos = await Promise.all(
-  shuffle(Object.values(portfolioImages).map((m) => m.default)).map(async (img) => ({
-    img,
-    full: await getImage({ src: img, width: 2000, format: 'webp', quality: 80 }),
-  })),
+	Object.entries(portfolioImages)
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(async ([path, mod]) => {
+			const category = path.split('/').at(-2) ?? 'other';
+			return {
+				img: mod.default,
+				category,
+				label: titleCase(category),
+				full: await getImage({ src: mod.default, width: 2000, format: 'webp', quality: 80 }),
+			};
+		}),
 );
+
+const counts = new Map<string, number>();
+for (const { category } of photos) counts.set(category, (counts.get(category) ?? 0) + 1);
+const categories = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
 ---
 
-<Layout title="Gallery" language="en">
+<Layout title="Selects">
 	<main>
-		<body id="body">
-			<header class="site-header">
-				<h1>Jimi Ademola</h1>
-				<p>Selects</p>
-			
+		<header class="site-header">
+			<h1>Jimi Ademola</h1>
+			<p>Selects</p>
+
+			<nav class="filters" aria-label="Filter by category">
+				<button type="button" data-filter="all" aria-pressed="true">All</button>
+				{
+					categories.map(([category]) => (
+						<button type="button" data-filter={category} aria-pressed="false">
+							{category}
+						</button>
+					))
+				}
+			</nav>
 		</header>
 
-		<!-- TODO: Add filter / sort of some sort to differ between galleries -->
-
 		<div class="masonry-gallery" id="portfolio-gallery">
-			{photos.map(({ img, full }, i) => (
-			<a
-      		href={full.src}
-     		data-pswp-width={full.attributes.width}
-      		data-pswp-height={full.attributes.height}
-			class="masonry-item"
-			target="_blank"
-			rel="noopener"
-			>
-			<Image
-				src={img}
-				alt="Almost there..."
-				widths={[400, 800, 1200]}
-				sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-				loading={i < 3 ? 'eager' : 'lazy'}
-				fetchpriority={i < 3 ? 'high' : 'auto'}
-				decoding="async"
-			/>
-			</a>
-		))}
+			{
+				photos.map(({ img, full, category, label }) => (
+					<a
+						href={full.src}
+						data-pswp-width={full.attributes.width}
+						data-pswp-height={full.attributes.height}
+						data-category={category}
+						class="masonry-item"
+						target="_blank"
+						rel="noopener"
+					>
+						<Image
+							src={img}
+							width={1200}
+							widths={[400, 800, 1200]}
+							sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+							alt={`${label} photograph by Jimi Ademola`}
+							loading="lazy"
+							decoding="async"
+						/>
+					</a>
+				))
+			}
 		</div>
-		</body>
 	</main>
+
+	<!--
+		Runs right after the gallery is parsed, before first paint, so visitors
+		never see the unshuffled order. Everything is lazy in the HTML so the
+		browser doesn't start downloading the pre-shuffle first image.
+	-->
+	<script is:inline>
+		(() => {
+			const gallery = document.getElementById('portfolio-gallery');
+			const items = Array.from(gallery.children);
+			for (let i = items.length - 1; i > 0; i--) {
+				const j = Math.floor(Math.random() * (i + 1));
+				[items[i], items[j]] = [items[j], items[i]];
+			}
+			gallery.append(...items);
+			const first = items[0] && items[0].querySelector('img');
+			if (first) {
+				first.loading = 'eager';
+				first.fetchPriority = 'high';
+			}
+		})();
+	</script>
 
 	<script>
 		import PhotoSwipeLightbox from 'photoswipe/lightbox';
 		import 'photoswipe/style.css';
 
+		const items = Array.from(document.querySelectorAll<HTMLAnchorElement>('.masonry-item'));
+		const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+		const known = new Set(buttons.map((b) => b.dataset.filter));
+
+		function applyFilter(filter: string) {
+			if (!known.has(filter)) filter = 'all';
+			for (const b of buttons) b.setAttribute('aria-pressed', String(b.dataset.filter === filter));
+			for (const item of items) item.hidden = filter !== 'all' && item.dataset.category !== filter;
+		}
+
+		for (const b of buttons) {
+			b.addEventListener('click', () => {
+				const filter = b.dataset.filter!;
+				applyFilter(filter);
+				// Makes a category linkable, e.g. photos.jimiademola.com/#basketball
+				history.replaceState(null, '', filter === 'all' ? location.pathname : `#${filter}`);
+			});
+		}
+
+		applyFilter(location.hash.slice(1) || 'all');
+
 		const lightbox = new PhotoSwipeLightbox({
 			gallery: '#portfolio-gallery',
-			children: 'a',
+			// Only step through the photos in the current category.
+			children: '.masonry-item:not([hidden])',
 			pswpModule: () => import('photoswipe'),
 		});
 
@@ -77,13 +137,8 @@ const photos = await Promise.all(
 </Layout>
 
 <style>
-	#body {
-		background-color: rgba(0, 241, 249, 0.05);
-
-	}
-
 	.site-header {
-		padding: 3rem 2rem 1rem;
+		padding: 3.5rem 2rem 1.5rem;
 		text-align: center;
 	}
 
@@ -92,19 +147,61 @@ const photos = await Promise.all(
 		font-size: clamp(1.75rem, 4vw, 2.5rem);
 		color: rgb(0, 0, 0);
 		font-weight: 600;
-		letter-spacing: 0.02em;
+		letter-spacing: 0.04em;
 		text-transform: uppercase;
 	}
 
 	.site-header p {
-		margin: 0.35rem 0 0;
+		margin: 0.5rem 0 0;
 		color: rgb(0, 0, 0);
 		text-transform: uppercase;
 		letter-spacing: 0.2em;
 		font-size: 0.8rem;
 	}
 
+	.filters {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem 1.5rem;
+		margin-top: 1.5rem;
+	}
+
+	.filters button {
+		padding: 0.25rem 0;
+		border: 0;
+		border-bottom: 1px solid transparent;
+		background: none;
+		color: rgba(0, 0, 0, 0.45);
+		font: inherit;
+		font-size: 0.75rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		cursor: pointer;
+		transition: color 0.2s ease, border-color 0.2s ease;
+	}
+
+	.filters button:hover {
+		color: rgb(0, 0, 0);
+	}
+
+	.filters button[aria-pressed='true'] {
+		color: rgb(0, 0, 0);
+		border-bottom-color: rgb(0, 0, 0);
+	}
+
+	.filters button:focus-visible {
+		outline: 2px solid rgb(0, 0, 0);
+		outline-offset: 3px;
+	}
+
+	.masonry-item[hidden] {
+		display: none;
+	}
+
 	.masonry-gallery {
+		max-width: 1800px;
+		margin: 0 auto;
 		column-count: 3;
 		column-gap: 1.5rem;
 		padding: 1rem 2rem 3rem;
@@ -117,6 +214,10 @@ const photos = await Promise.all(
 	}
 
 	@media (max-width: 640px) {
+		.site-header {
+			padding: 2.5rem 1rem 1rem;
+		}
+
 		.masonry-gallery {
 			column-count: 1;
 			padding: 1rem 1rem 2rem;
@@ -133,8 +234,9 @@ const photos = await Promise.all(
 		width: 100%;
 		height: auto;
 		display: block;
-		border-radius: 0px;
 		border: 1px solid rgb(221, 221, 221);
+		/* Shows the photo's shape while it loads instead of an empty gap. */
+		background-color: rgba(0, 0, 0, 0.04);
 		transition: filter 0.3s ease;
 	}
 
@@ -142,11 +244,8 @@ const photos = await Promise.all(
 		filter: brightness(0.85);
 	}
 
-	#videos-link {
-		position: absolute;
-		top: 1rem;
-		right: 1rem;
-		text-decoration: none;
-		color: rgb(0, 0, 0);
+	.masonry-item:focus-visible {
+		outline: 2px solid rgb(0, 0, 0);
+		outline-offset: 3px;
 	}
 </style>

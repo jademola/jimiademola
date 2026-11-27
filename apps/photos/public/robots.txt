@@ -1,28 +1,7 @@
 User-agent: *
-Disallow: /access
-Disallow: /search*
-Disallow: /*preview_print.html$
-Disallow: /*.print.html$
-Disallow: /data/*
-Disallow: /*?*page=
-Disallow: /*?*sort=
-Disallow: /*?*view=
+Allow: /
 
-User-agent: Zing-BottaBot/2.0
-Disallow: /
-
-User-agent: Google-HTTP-Java-Client/1.17.0-rc (gzip)
-Disallow: /video/.*
-
-User-agent: istellabot/t.1
-Disallow: /video/.*
-
-User-agent: Pcore-HTTP/v0.24.5
-Disallow: /video/.*
-
-User-agent: trendkite-akashic-crawler
-Disallow: /
-
+# Keep the photos out of AI training crawls.
 User-agent: CCBot
 Disallow: /
 
@@ -32,5 +11,4 @@ Disallow: /
 User-agent: GPTBot
 Disallow: /
 
-User-agent: Bingbot
-Crawl-delay: 10
+Sitemap: https://www.photos.jimiademola.com/sitemap-index.xml
